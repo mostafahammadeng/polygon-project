@@ -1,11 +1,9 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// 1. Scene setup
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x1e2022);
 
-// 2. Camera setup
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight
@@ -14,7 +12,6 @@ const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 
 camera.position.set(0, 7, 7);
 scene.add(camera);
 
-// 3. Renderer
 const canvas = document.querySelector('#webgl');
 if (!canvas) {
   console.error("Canvas element #webgl not found!");
@@ -24,7 +21,6 @@ const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// 4. Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
 scene.add(ambientLight);
 
@@ -32,29 +28,24 @@ const dirLight = new THREE.DirectionalLight(0xffffff, 2);
 dirLight.position.set(5, 10, 7);
 scene.add(dirLight);
 
-// 5. Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.maxPolarAngle = Math.PI / 2.1;
 
-// 6. Build 3D Calculator Body
 const calcGroup = new THREE.Group();
 
-// Body Box
 const bodyGeo = new THREE.BoxGeometry(3.6, 0.4, 4.8);
 const bodyMat = new THREE.MeshStandardMaterial({ color: 0x22252d, roughness: 0.4 });
 const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
 bodyMesh.position.y = -0.2;
 calcGroup.add(bodyMesh);
 
-// Screen Box
 const screenGeo = new THREE.BoxGeometry(3.1, 0.05, 0.9);
 const screenMat = new THREE.MeshStandardMaterial({ color: 0x17181a, roughness: 0.2 });
 const screenMesh = new THREE.Mesh(screenGeo, screenMat);
 screenMesh.position.set(0, 0.03, -1.6);
 calcGroup.add(screenMesh);
 
-// Dynamic Screen Display (2D Canvas Texture on 3D Plane)
 const textCanvas = document.createElement('canvas');
 textCanvas.width = 512;
 textCanvas.height = 128;
@@ -84,7 +75,6 @@ function updateDisplay() {
 }
 updateDisplay();
 
-// 7. Buttons Data & Mesh Creation
 const buttonsData = [
   ['C', '(', ')', '/'],
   ['7', '8', '9', '*'],
@@ -132,7 +122,6 @@ buttonsData.forEach((row, rIdx) => {
     btnMesh.position.set(xPos, 0.1, zPos);
     btnMesh.userData = { value: val, originalY: 0.1, color: color };
 
-    // Button Text Label
     const btnCanvas = document.createElement('canvas');
     btnCanvas.width = 128;
     btnCanvas.height = 128;
@@ -158,7 +147,6 @@ buttonsData.forEach((row, rIdx) => {
 
 scene.add(calcGroup);
 
-// 8. Interaction Setup
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -202,7 +190,6 @@ function handleInput(val) {
   updateDisplay();
 }
 
-// Window Resize
 window.addEventListener('resize', () => {
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
@@ -211,7 +198,6 @@ window.addEventListener('resize', () => {
   renderer.setSize(sizes.width, sizes.height);
 });
 
-// 9. Render Loop
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
