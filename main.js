@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 // 1. Scene setup
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x222629);
+scene.background = new THREE.Color(0x1e2022);
 
 // 2. Camera setup
 const sizes = {
@@ -16,6 +16,10 @@ scene.add(camera);
 
 // 3. Renderer
 const canvas = document.querySelector('#webgl');
+if (!canvas) {
+  console.error("Canvas element #webgl not found!");
+}
+
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -154,7 +158,7 @@ buttonsData.forEach((row, rIdx) => {
 
 scene.add(calcGroup);
 
-// 8. Interaction Setup (Raycaster & Press Event)
+// 8. Interaction Setup
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -169,7 +173,6 @@ window.addEventListener('pointerdown', (event) => {
     const clickedBtn = intersects[0].object;
     const val = clickedBtn.userData.value;
 
-    // Press animation
     clickedBtn.position.y = 0.03;
     setTimeout(() => {
       clickedBtn.position.y = clickedBtn.userData.originalY;
@@ -199,7 +202,7 @@ function handleInput(val) {
   updateDisplay();
 }
 
-// Window Resize Handler
+// Window Resize
 window.addEventListener('resize', () => {
   sizes.width = window.innerWidth;
   sizes.height = window.innerHeight;
