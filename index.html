@@ -3,8 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>3D Calculator</title>
-    <link rel="stylesheet" href="/style.css" />
+    <title>3D Interactive Calculator</title>
+    <link rel="stylesheet" href="./style.css" />
+    
+    <!-- Import maps polyfill & Three.js CDN -->
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
   </head>
   <body>
     <canvas id="webgl"></canvas>
@@ -18,4 +29,3 @@
     <script type="module" src="./main.js"></script>
   </body>
 </html>
-
